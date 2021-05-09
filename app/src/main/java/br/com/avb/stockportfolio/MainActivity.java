@@ -1,5 +1,6 @@
 package br.com.avb.stockportfolio;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import br.com.avb.stockportfolio.databinding.ActivityMainBinding;
+import br.com.avb.stockportfolio.enums.IntentValue;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,8 +36,11 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this,FormActivity.class);
+                intent.putExtra("action", IntentValue.NEW);
+                startActivity(intent);
             }
         });
     }
