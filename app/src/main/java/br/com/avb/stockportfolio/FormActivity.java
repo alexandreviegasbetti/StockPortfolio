@@ -1,7 +1,6 @@
 package br.com.avb.stockportfolio;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,12 +55,7 @@ public class FormActivity extends AppCompatActivity {
             uploadForm();
         }
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save();
-            }
-        });
+        btnSave.setOnClickListener(v -> save());
     }
 
     private void save() {
@@ -78,15 +72,17 @@ public class FormActivity extends AppCompatActivity {
             }
             stockCompany.setCode(code.getSelectedItem().toString());
             stockCompany.setPurchaseDate(date.getText().toString());
-            Integer quantity = Integer.valueOf(this.quantity.getText().toString());
-            stockCompany.setQuantity(quantity);
-            Double value = Double.valueOf(this.value.getText().toString());
-            stockCompany.setValue(value);
-            BigDecimal totalValue = getTotalValue(quantity, value);
-            stockCompany.setTotalValue(totalValue.doubleValue());
+            Integer qtd = Integer.valueOf(this.quantity.getText().toString());
+            stockCompany.setQuantity(qtd);
+            Double val = Double.valueOf(this.value.getText().toString());
+            stockCompany.setValue(val);
+            BigDecimal totalVal = getTotalValue(qtd, val);
+            stockCompany.setTotalValue(totalVal.doubleValue());
             stockCompany.setName(listCode.stream()
                     .filter(c -> c.getCode().equals(code.getSelectedItem().toString()))
-                    .findFirst().orElse(null).getName());
+                    .findFirst()
+                    .orElse(Company.builder().code(code.getSelectedItem().toString()).build())
+                    .getName());
 
             if (action.equals(EDIT.toString())) {
                 StockCompanyDAO.edit(stockCompany, this);
@@ -104,8 +100,8 @@ public class FormActivity extends AppCompatActivity {
         if (!id.equals(0)) {
             stockCompany = StockCompanyDAO.getStockCompanyById(this, id);
 
-            for (int i = 1; i < listCode.size(); i++) {
-                if (String.valueOf(listCode.get(i).getCode()) == stockCompany.getCode()) {
+            for (int i = 0; i < listCode.size(); i++) {
+                if (String.valueOf(listCode.get(i).getCode()).equals(stockCompany.getCode())) {
                     code.setSelection(i);
                 }
             }
@@ -117,11 +113,9 @@ public class FormActivity extends AppCompatActivity {
     }
 
     private void spinnerAdapter() {
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,
+        code.setAdapter(new ArrayAdapter(this,
                 R.layout.support_simple_spinner_dropdown_item, listCode.stream()
-                .map(Company::getCode).collect(Collectors.toList()));
-
-        code.setAdapter(spinnerAdapter);
+                .map(Company::getCode).collect(Collectors.toList())));
     }
 
     private BigDecimal getTotalValue(Integer quantity, Double value) {

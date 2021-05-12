@@ -13,6 +13,8 @@ import br.com.avb.stockportfolio.entity.StockCompany;
 
 public class StockCompanyDAO {
 
+    private static final String TABLE_NAME = "stock_company";
+
     public static void insert(StockCompany stockCompany, Context context) {
         ContentValues values = new ContentValues();
         values.put("name", stockCompany.getName());
@@ -22,10 +24,10 @@ public class StockCompanyDAO {
         values.put("total_value", stockCompany.getTotalValue());
         values.put("purchase_date", stockCompany.getPurchaseDate());
 
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getWritableDatabase();
+        SQLiteDatabase sqLite = new DataBase(context).getWritableDatabase();
 
-        sqLite.insert("stock_company", null, values);
+        sqLite.insert(TABLE_NAME, null, values);
+
     }
 
     public static void edit(StockCompany stockCompany, Context context) {
@@ -37,22 +39,19 @@ public class StockCompanyDAO {
         values.put("total_value", stockCompany.getTotalValue());
         values.put("purchase_date", stockCompany.getPurchaseDate());
 
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getWritableDatabase();
+        SQLiteDatabase sqLite = new DataBase(context).getWritableDatabase();
 
-        sqLite.update("stock_company", values, "id = " + stockCompany.getId(), null);
+        sqLite.update(TABLE_NAME, values, "id = " + stockCompany.getId(), null);
     }
 
     public static void delete(Integer id, Context context) {
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getWritableDatabase();
-        sqLite.delete("stock_company", "id = " + id, null);
+        SQLiteDatabase sqLite = new DataBase(context).getWritableDatabase();
+        sqLite.delete(TABLE_NAME, "id = " + id, null);
     }
 
     public static List<StockCompany> getAllStockCompanies(Context context) {
         List<StockCompany> stockCompanies = new ArrayList<>();
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getReadableDatabase();
+        SQLiteDatabase sqLite = new DataBase(context).getReadableDatabase();
         Cursor cursor = sqLite.rawQuery("SELECT id, code, name, purchase_date, quantity, value, total_value " +
                 "FROM stock_company ORDER BY code", null);
         if (cursor.getCount() > 0) {
@@ -74,8 +73,7 @@ public class StockCompanyDAO {
     }
 
     public static StockCompany getStockCompanyById(Context context, Integer id) {
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getReadableDatabase();
+        SQLiteDatabase sqLite = new DataBase(context).getReadableDatabase();
         Cursor cursor = sqLite.rawQuery("SELECT id, code, name, purchase_date, quantity, value, total_value " +
                 "FROM stock_company WHERE id = " + id, null);
         if (cursor.getCount() > 0) {
@@ -95,8 +93,7 @@ public class StockCompanyDAO {
     }
 
     public static StockCompany getStockCompanyByCode(Context context, String code) {
-        DataBase dataBase = new DataBase(context);
-        SQLiteDatabase sqLite = dataBase.getReadableDatabase();
+        SQLiteDatabase sqLite = new DataBase(context).getReadableDatabase();
         Cursor cursor = sqLite.rawQuery("SELECT id, code, name, purchase_date, quantity, value, total_value " +
                 "FROM stock_company WHERE code LIKE '%" + code + "%' ", null);
         if (cursor.getCount() > 0) {

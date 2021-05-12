@@ -46,7 +46,7 @@ public class DataBase extends SQLiteOpenHelper {
         db.execSQL("INSERT OR REPLACE INTO company VALUES(9,'CVCB3','CVC Brasil')");
         db.execSQL("INSERT OR REPLACE INTO company VALUES(10,'PNVL3','Dimed')");
         db.execSQL("INSERT OR REPLACE INTO company VALUES(11,'IRBR3','IRB Brasil')");
-        db.execSQL("INSERT OR REPLACE INTO company VALUES(12,'ITUB4','Itau Unibanco')");
+        db.execSQL("INSERT OR REPLACE INTO company VALUES(12,'ITUB4','Banco Itaú')");
         db.execSQL("INSERT OR REPLACE INTO company VALUES(13,'LINX3','Linx')");
         db.execSQL("INSERT OR REPLACE INTO company VALUES(14,'LREN3','Lojas Renner')");
         db.execSQL("INSERT OR REPLACE INTO company VALUES(15,'MGLU3','Magazine Luisa')");
@@ -60,6 +60,6 @@ public class DataBase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
+
 }
